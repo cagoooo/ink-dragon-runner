@@ -39,18 +39,28 @@ router.post("/scores", async (req, res) => {
   };
 
   try {
-    const [inserted] = await db
-      .insert(leaderboardTable)
-      .values(entry)
-      .returning();
+    const inserted = await db.transaction(async (tx) => {
+      // Acquire an exclusive advisory lock for the duration of this transaction.
+      // All concurrent writers will queue here, preventing stale-snapshot races
+      // where two transactions each see a different top-10 and prune too few rows.
+      await tx.execute(sql`SELECT pg_advisory_xact_lock(1234567890)`);
 
-    // Prune to keep only top MAX_ENTRIES rows
-    await db.execute(sql`
-      DELETE FROM leaderboard
-      WHERE id NOT IN (
-        SELECT id FROM leaderboard ORDER BY score DESC LIMIT ${MAX_ENTRIES}
-      )
-    `);
+      const [row] = await tx
+        .insert(leaderboardTable)
+        .values(entry)
+        .returning();
+
+      // Prune to keep only top MAX_ENTRIES rows — safe because the advisory lock
+      // above guarantees no other writer can run this section concurrently.
+      await tx.execute(sql`
+        DELETE FROM leaderboard
+        WHERE id NOT IN (
+          SELECT id FROM leaderboard ORDER BY score DESC LIMIT ${MAX_ENTRIES}
+        )
+      `);
+
+      return row;
+    });
 
     res.status(201).json(inserted);
   } catch (err) {
