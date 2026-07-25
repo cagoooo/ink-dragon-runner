@@ -1,0 +1,27 @@
+kind = "web"
+previewPath = "/"
+title = "仙人掌大逃亡：奔跑吧小墨龍"
+version = "1.0.0"
+id = "artifacts/ink-dragon-runner"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 18530
+
+[services.development]
+run = "pnpm --filter @workspace/ink-dragon-runner run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/ink-dragon-runner", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/ink-dragon-runner/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "18530"
+BASE_PATH = "/"

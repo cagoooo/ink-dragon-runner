@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap');
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --font-sans: 'ZCOOL XiaoWei', serif;
+  --font-serif: 'Ma Shan Zheng', cursive;
+}
+
+:root {
+  --background: 37 43% 94%; /* #F5F0E8 */
+  --foreground: 22 30% 12%; /* #2C1810 */
+}
+
+.dark {
+  --background: 22 30% 8%; /* #1A1410 */
+  --foreground: 37 43% 86%; /* #E8E0D0 */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  touch-action: none;
+  font-family: var(--font-sans);
+}
+
+.font-brush {
+  font-family: var(--font-serif);
+}
+
+.stamp-container {
+  border-radius: 4px;
+}
+.stamp-container::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border: 2px solid rgba(227,66,52,0.4);
+  transform: rotate(2deg);
+  pointer-events: none;
+}
