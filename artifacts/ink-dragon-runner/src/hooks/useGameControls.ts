@@ -76,5 +76,5 @@ export const useGameControls = (
     handleDuck(false);
   }, [handleDuck]);
 
-  return { onTouchStart, onTouchEnd };
+  return { onTouchStart, onTouchEnd, handleJump };
 };

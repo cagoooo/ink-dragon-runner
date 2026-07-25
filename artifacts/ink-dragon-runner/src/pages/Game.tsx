@@ -40,7 +40,7 @@ export default function Game() {
 
   const { stateRef, uiState, startGame, setGameOver } = useGameState();
   const { playJump, playHit, toggleMute, isMuted, ensureCtx } = useAudio(stateRef);
-  const { onTouchStart, onTouchEnd } = useGameControls(stateRef, startGame, playJump, ensureCtx);
+  const { onTouchStart, onTouchEnd, handleJump } = useGameControls(stateRef, startGame, playJump, ensureCtx);
 
   useGameLoop(canvasRef, stateRef, setGameOver, playHit);
 
@@ -92,6 +92,7 @@ export default function Game() {
   return (
     <div
       className="relative w-full h-[100dvh] overflow-hidden select-none bg-background transition-colors duration-1000"
+      onClick={handleJump}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
       onTouchCancel={onTouchEnd}
