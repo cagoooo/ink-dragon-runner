@@ -7,13 +7,15 @@ export const useGameState = () => {
     mode: stateRef.current.mode,
     score: stateRef.current.score,
     highScore: stateRef.current.highScore,
+    isNewRecord: false,
   });
 
-  const syncUiState = useCallback(() => {
+  const syncUiState = useCallback((isNewRecord = false) => {
     setUiState({
       mode: stateRef.current.mode,
       score: Math.floor(stateRef.current.score),
       highScore: Math.floor(stateRef.current.highScore),
+      isNewRecord,
     });
   }, []);
 
@@ -22,7 +24,7 @@ export const useGameState = () => {
     stateRef.current = createInitialState();
     stateRef.current.highScore = highScore;
     stateRef.current.mode = 'PLAYING';
-    syncUiState();
+    syncUiState(false);
   }, [syncUiState]);
 
   const startGame = useCallback(() => {
@@ -33,11 +35,13 @@ export const useGameState = () => {
 
   const setGameOver = useCallback(() => {
     stateRef.current.mode = 'DEAD';
+    let isNewRecord = false;
     if (stateRef.current.score > stateRef.current.highScore) {
+      isNewRecord = true;
       stateRef.current.highScore = stateRef.current.score;
       localStorage.setItem('ink-dragon-highscore', Math.floor(stateRef.current.score).toString());
     }
-    syncUiState();
+    syncUiState(isNewRecord);
   }, [syncUiState]);
 
   return { stateRef, uiState, startGame, setGameOver, syncUiState };
