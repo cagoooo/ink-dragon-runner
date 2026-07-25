@@ -2,14 +2,16 @@ import React, { useRef, useEffect } from 'react';
 import { useGameState } from '../hooks/useGameState';
 import { useGameControls } from '../hooks/useGameControls';
 import { useGameLoop } from '../hooks/useGameLoop';
+import { useAudio } from '../hooks/useAudio';
 
 export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   
   const { stateRef, uiState, startGame, setGameOver } = useGameState();
-  const { onTouchStart, onTouchEnd } = useGameControls(stateRef, startGame);
+  const { playJump, playHit, toggleMute, isMuted, ensureCtx } = useAudio(stateRef);
+  const { onTouchStart, onTouchEnd } = useGameControls(stateRef, startGame, playJump, ensureCtx);
   
-  useGameLoop(canvasRef, stateRef, setGameOver);
+  useGameLoop(canvasRef, stateRef, setGameOver, playHit);
 
   useEffect(() => {
     const handleResize = () => {
@@ -34,6 +36,29 @@ export default function Game() {
         ref={canvasRef} 
         className="block w-full h-full"
       />
+
+      {/* Mute Button */}
+      <button
+        onClick={toggleMute}
+        title={isMuted ? '開啟音效' : '靜音'}
+        className="absolute top-3 right-3 z-50 w-10 h-10 flex items-center justify-center rounded-full border border-[#3D2B1F]/30 bg-[#F5F0E8]/70 text-[#3D2B1F] hover:bg-[#F5F0E8] transition-colors shadow-sm backdrop-blur-sm"
+      >
+        {isMuted ? (
+          // Muted icon
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <line x1="23" y1="9" x2="17" y2="15"/>
+            <line x1="17" y1="9" x2="23" y2="15"/>
+          </svg>
+        ) : (
+          // Sound on icon
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+          </svg>
+        )}
+      </button>
 
       {/* IDLE Screen Overlay */}
       {uiState.mode === 'IDLE' && (

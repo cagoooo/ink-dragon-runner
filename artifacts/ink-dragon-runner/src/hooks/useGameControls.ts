@@ -4,11 +4,14 @@ import { GAME_CONFIG } from '../game/config';
 
 export const useGameControls = (
   stateRef: React.MutableRefObject<GameState>,
-  startGame: () => void
+  startGame: () => void,
+  playJump: () => void,
+  ensureAudioCtx: () => void,
 ) => {
   
   const handleJump = useCallback(() => {
     if (stateRef.current.mode !== 'PLAYING') {
+      ensureAudioCtx();
       startGame();
       return;
     }
@@ -16,8 +19,9 @@ export const useGameControls = (
       stateRef.current.dragon.isJumping = true;
       stateRef.current.dragon.vy = GAME_CONFIG.JUMP_VY;
       stateRef.current.dragon.isDucking = false;
+      playJump();
     }
-  }, [stateRef, startGame]);
+  }, [stateRef, startGame, playJump, ensureAudioCtx]);
 
   const handleDuck = useCallback((isDucking: boolean) => {
     if (stateRef.current.mode === 'PLAYING') {
@@ -56,6 +60,7 @@ export const useGameControls = (
 
   const onTouchStart = useCallback((e: React.TouchEvent) => {
     if (stateRef.current.mode !== 'PLAYING') {
+      ensureAudioCtx();
       startGame();
       return;
     }
@@ -65,9 +70,9 @@ export const useGameControls = (
     } else {
       handleDuck(true);
     }
-  }, [stateRef, startGame, handleJump, handleDuck]);
+  }, [stateRef, startGame, handleJump, handleDuck, ensureAudioCtx]);
 
-  const onTouchEnd = useCallback((e: React.TouchEvent) => {
+  const onTouchEnd = useCallback((_e: React.TouchEvent) => {
     handleDuck(false);
   }, [handleDuck]);
 

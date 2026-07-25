@@ -54,7 +54,8 @@ const checkCollision = (state: GameState, width: number, height: number) => {
 export const useGameLoop = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
   stateRef: React.MutableRefObject<GameState>,
-  setGameOver: () => void
+  setGameOver: () => void,
+  playHit: () => void,
 ) => {
   const requestRef = useRef<number>(0);
 
@@ -155,6 +156,7 @@ export const useGameLoop = (
         }
 
         if (checkCollision(state, width, height)) {
+          playHit();
           setGameOver();
         }
 
@@ -183,5 +185,5 @@ export const useGameLoop = (
     return () => {
       if (requestRef.current) cancelAnimationFrame(requestRef.current);
     };
-  }, [canvasRef, stateRef, setGameOver]);
+  }, [canvasRef, stateRef, setGameOver, playHit]);
 };
