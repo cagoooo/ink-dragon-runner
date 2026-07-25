@@ -1,22 +1,26 @@
 import { Router, type IRouter } from "express";
+import { db, leaderboardTable } from "@workspace/db";
+import { desc, sql } from "drizzle-orm";
 
 const router: IRouter = Router();
 
-interface ScoreEntry {
-  name: string;
-  score: number;
-  date: string;
-}
-
-// In-memory leaderboard — persists for the lifetime of the server process
-const leaderboard: ScoreEntry[] = [];
 const MAX_ENTRIES = 10;
 
-router.get("/scores", (_req, res) => {
-  res.json(leaderboard);
+router.get("/scores", async (_req, res) => {
+  try {
+    const rows = await db
+      .select()
+      .from(leaderboardTable)
+      .orderBy(desc(leaderboardTable.score))
+      .limit(MAX_ENTRIES);
+    res.json(rows);
+  } catch (err) {
+    console.error("Failed to fetch scores:", err);
+    res.status(500).json({ error: "Failed to fetch scores" });
+  }
 });
 
-router.post("/scores", (req, res) => {
+router.post("/scores", async (req, res) => {
   const { name, score } = req.body as { name?: unknown; score?: unknown };
 
   if (typeof name !== "string" || name.trim().length === 0) {
@@ -28,17 +32,31 @@ router.post("/scores", (req, res) => {
     return;
   }
 
-  const entry: ScoreEntry = {
+  const entry = {
     name: name.trim().slice(0, 20),
     score: Math.floor(score),
     date: new Date().toISOString().slice(0, 10),
   };
 
-  leaderboard.push(entry);
-  leaderboard.sort((a, b) => b.score - a.score);
-  if (leaderboard.length > MAX_ENTRIES) leaderboard.splice(MAX_ENTRIES);
+  try {
+    const [inserted] = await db
+      .insert(leaderboardTable)
+      .values(entry)
+      .returning();
 
-  res.status(201).json(entry);
+    // Prune to keep only top MAX_ENTRIES rows
+    await db.execute(sql`
+      DELETE FROM leaderboard
+      WHERE id NOT IN (
+        SELECT id FROM leaderboard ORDER BY score DESC LIMIT ${MAX_ENTRIES}
+      )
+    `);
+
+    res.status(201).json(inserted);
+  } catch (err) {
+    console.error("Failed to save score:", err);
+    res.status(500).json({ error: "Failed to save score" });
+  }
 });
 
 export default router;
