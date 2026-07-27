@@ -5,6 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>仙人掌大逃亡：奔跑吧小墨龍 | 水墨跑酷遊戲</title>
     
+    <!-- Chunk Hash 404 Auto Self-Healing Guard Script -->
+    <script>
+      (function() {
+        var key = 'ink_dragon_heal_count';
+        window.addEventListener('error', function(e) {
+          var target = e.target || {};
+          var isAssetError = target.tagName === 'SCRIPT' || target.tagName === 'LINK';
+          var isChunkError = e.message && (e.message.indexOf('Importing a module script failed') !== -1 || e.message.indexOf('Failed to fetch dynamically imported module') !== -1);
+          
+          if (isAssetError || isChunkError) {
+            var count = parseInt(sessionStorage.getItem(key) || '0', 10);
+            if (count < 2) {
+              sessionStorage.setItem(key, (count + 1).toString());
+              if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(regs) {
+                  regs.forEach(function(r) { r.unregister(); });
+                });
+              }
+              if ('caches' in window) {
+                caches.keys().then(function(keys) {
+                  keys.forEach(function(k) { caches.delete(k); });
+                });
+              }
+              setTimeout(function() {
+                var cleanUrl = window.location.protocol + '//' + window.location.host + window.location.pathname + '?v=' + Date.now();
+                window.location.replace(cleanUrl);
+              }, 300);
+            }
+          }
+        }, true);
+      })();
+    </script>
+
     <!-- Primary Meta Tags -->
     <meta name="title" content="仙人掌大逃亡：奔跑吧小墨龍 | 水墨跑酷遊戲" />
     <meta name="description" content="🐉 全新東方水墨畫風網頁無盡跑酷遊戲！靈敏操控小墨龍跳躍與俯衝，穿梭千重仙人掌陣，手機與電腦即刻免費挑戰最高分記錄！" />
