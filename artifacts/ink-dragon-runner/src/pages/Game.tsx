@@ -130,30 +130,40 @@ export default function Game() {
           </div>
 
           {/* 神龍水墨皮膚選擇 Carousel */}
-          <div className="w-full max-w-xl px-4" onClick={(e) => e.stopPropagation()}>
-            <p className="text-xs font-bold text-[#5A3E30] mb-2 tracking-widest">🎨 選擇出戰神龍水墨皮膚</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+          <div className="w-full max-w-3xl md:max-w-4xl px-4 my-2" onClick={(e) => e.stopPropagation()}>
+            <p className="text-sm sm:text-base md:text-xl font-bold text-[#5A3E30] mb-3 tracking-widest drop-shadow-sm">
+              🎨 選擇出戰神龍水墨皮膚
+            </p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
               {DRAGON_SKINS.map((skin: DragonSkin) => {
                 const isSelected = skin.id === selectedSkinId;
                 return (
                   <button
                     key={skin.id}
                     onClick={() => handleSelectSkin(skin.id)}
-                    className={`p-2.5 rounded-lg border-2 text-left transition-all relative ${
+                    className={`p-3.5 sm:p-4 md:p-5 rounded-xl border-2 text-left transition-all relative flex flex-col justify-between ${
                       isSelected
-                        ? 'border-[#E34234] bg-white shadow-md scale-105'
-                        : 'border-[#3D2B1F]/20 bg-[#F5F0E8]/80 hover:border-[#3D2B1F]/50'
+                        ? 'border-[#E34234] bg-white shadow-xl scale-[1.03] ring-2 ring-[#E34234]/30'
+                        : 'border-[#3D2B1F]/20 bg-[#F5F0E8]/90 hover:border-[#3D2B1F]/50 hover:bg-white/60 shadow-sm'
                     }`}
                   >
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <span className="text-xl">{skin.badge}</span>
-                      <span className="font-bold text-xs truncate text-[#2C1810]">{skin.name}</span>
+                    <div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-2xl sm:text-3xl">{skin.badge}</span>
+                        <span className="font-bold text-sm sm:text-base md:text-lg text-[#2C1810] tracking-wide">
+                          {skin.name}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-[#5A3E30] leading-relaxed">
+                        {skin.description}
+                      </p>
                     </div>
-                    <p className="text-[10px] text-[#5A3E30] line-clamp-2">{skin.description}</p>
                     {isSelected && (
-                      <span className="absolute top-1 right-1 text-[10px] bg-[#E34234] text-white px-1.5 py-0.5 rounded-full font-bold">
-                        出戰
-                      </span>
+                      <div className="mt-2 text-right">
+                        <span className="inline-block text-xs md:text-sm bg-[#E34234] text-white px-2.5 py-0.5 rounded-full font-bold shadow-sm">
+                          ✓ 出戰中
+                        </span>
+                      </div>
                     )}
                   </button>
                 );
@@ -180,36 +190,36 @@ export default function Game() {
           }}
         >
           <div
-            className="border-[3px] border-[#E34234] p-6 sm:p-8 relative bg-[#F5F0E8] w-full mx-4 shadow-2xl rounded-lg"
-            style={{ maxWidth: '24rem' }}
+            className="border-[3px] border-[#E34234] p-6 sm:p-8 relative bg-[#F5F0E8] w-full mx-4 shadow-2xl rounded-xl"
+            style={{ maxWidth: '28rem' }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* New record badge */}
             {isNewRecord && (
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#E34234] text-white text-xs font-bold px-4 py-1 rounded-full shadow-md tracking-widest whitespace-nowrap">
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-[#E34234] text-white text-xs sm:text-sm font-bold px-4 py-1 rounded-full shadow-md tracking-widest whitespace-nowrap">
                 🏆 新紀錄！
               </div>
             )}
 
-            <h1 className="text-3xl text-[#E34234] font-brush tracking-widest mb-4 border-b-2 border-[#E34234]/30 pb-2">
+            <h1 className="text-3xl sm:text-4xl text-[#E34234] font-brush tracking-widest mb-4 border-b-2 border-[#E34234]/30 pb-2">
               遊戲結束
             </h1>
 
             {/* Score comparison */}
-            <div className="mb-4 space-y-1">
-              <p className="text-3xl text-[#2C1810] font-sans font-bold">
+            <div className="mb-5 space-y-1">
+              <p className="text-4xl sm:text-5xl text-[#2C1810] font-sans font-bold">
                 {uiState.score}
-                <span className="text-base font-normal ml-2 text-[#5A3E30]">本次距離</span>
+                <span className="text-base sm:text-lg font-normal ml-2 text-[#5A3E30]">本次距離</span>
               </p>
-              <p className="text-sm text-[#2C1810]/70 font-sans">
+              <p className="text-base text-[#2C1810]/80 font-sans">
                 個人最佳：<span className={`font-bold ${isNewRecord ? 'text-[#E34234]' : ''}`}>{uiState.highScore}</span>
               </p>
             </div>
 
             {/* Submit to leaderboard */}
             {!submitted ? (
-              <div className="mb-4 space-y-2" onClick={(e) => e.stopPropagation()}>
-                <p className="text-xs text-[#5A3E30]">上傳成績至全台雲端排行榜</p>
+              <div className="mb-5 space-y-2" onClick={(e) => e.stopPropagation()}>
+                <p className="text-sm font-bold text-[#5A3E30]">上傳成績至全台雲端排行榜</p>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -218,33 +228,33 @@ export default function Game() {
                     onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                     placeholder="輸入大俠名字"
                     maxLength={20}
-                    className="flex-1 min-w-0 px-3 py-1.5 text-xs border border-[#3D2B1F]/30 rounded bg-white text-[#2C1810] focus:outline-none focus:border-[#E34234]"
+                    className="flex-1 min-w-0 px-3 py-2 text-sm border border-[#3D2B1F]/30 rounded-lg bg-white text-[#2C1810] focus:outline-none focus:border-[#E34234]"
                   />
                   <button
                     onClick={handleSubmit}
                     disabled={!playerName.trim() || submitting}
-                    className="px-3 py-1.5 text-xs bg-[#E34234] text-white rounded disabled:opacity-40 hover:bg-[#c73228] transition-colors whitespace-nowrap"
+                    className="px-4 py-2 text-sm bg-[#E34234] font-bold text-white rounded-lg disabled:opacity-40 hover:bg-[#c73228] transition-colors whitespace-nowrap"
                   >
                     {submitting ? '…' : '送出'}
                   </button>
                 </div>
               </div>
             ) : (
-              <p className="text-xs text-[#5A3E30] mb-3">✓ 成績已成功登錄雲端！</p>
+              <p className="text-sm font-bold text-[#5A3E30] mb-4">✓ 成績已成功登錄雲端！</p>
             )}
 
             {/* 功能按鈕組：戰報生成 & 排行榜 */}
-            <div className="flex justify-center gap-3 mb-4">
+            <div className="flex justify-center gap-3 mb-5">
               <button
                 onClick={handleGenerateShareCard}
-                className="px-3 py-1.5 text-xs border border-[#8B4513] bg-[#EAE2D5] text-[#3D2B1F] rounded font-bold hover:bg-[#d8c8b0] transition-colors flex items-center gap-1"
+                className="px-4 py-2 text-xs sm:text-sm border border-[#8B4513] bg-[#EAE2D5] text-[#3D2B1F] rounded-lg font-bold hover:bg-[#d8c8b0] transition-colors flex items-center gap-1 shadow-sm"
               >
                 🎨 生成水墨戰報
               </button>
 
               <button
                 onClick={() => setShowLeaderboard((v) => !v)}
-                className="px-3 py-1.5 text-xs border border-[#E34234] text-[#E34234] rounded font-bold hover:bg-[#E34234]/10 transition-colors"
+                className="px-4 py-2 text-xs sm:text-sm border border-[#E34234] text-[#E34234] rounded-lg font-bold hover:bg-[#E34234]/10 transition-colors shadow-sm"
               >
                 {showLeaderboard ? '收起榜單' : '🌐 雲端排行榜 Top 10'}
               </button>
@@ -252,25 +262,25 @@ export default function Game() {
 
             {/* Leaderboard table */}
             {showLeaderboard && leaderboard.length > 0 && (
-              <div className="mb-4 w-full text-left border-t border-[#E34234]/20 pt-2">
-                <p className="text-[11px] font-bold text-[#5A3E30] mb-1.5 tracking-widest text-center">🏅 全台雲端排行榜</p>
-                <table className="w-full text-[11px] text-[#2C1810]">
+              <div className="mb-5 w-full text-left border-t border-[#E34234]/20 pt-3">
+                <p className="text-xs sm:text-sm font-bold text-[#5A3E30] mb-2 tracking-widest text-center">🏅 全台雲端排行榜 Top 10</p>
+                <table className="w-full text-xs sm:text-sm text-[#2C1810]">
                   <tbody>
                     {leaderboard.map((entry, i) => (
                       <tr
                         key={i}
                         className={`border-b border-[#E34234]/10 last:border-0 ${
                           entry.name === playerName.trim() && entry.score === uiState.score
-                            ? 'font-bold text-[#E34234]'
+                            ? 'font-bold text-[#E34234] bg-[#E34234]/5'
                             : ''
                         }`}
                       >
-                        <td className="py-1 pr-1 w-5 text-center font-bold">
+                        <td className="py-1.5 pr-2 w-6 text-center font-bold">
                           {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`}
                         </td>
-                        <td className="py-1 flex-1 truncate max-w-[110px]">{entry.name}</td>
-                        <td className="py-1 pl-1 text-right font-mono">{entry.score}m</td>
-                        <td className="py-1 pl-1 text-right text-[#9A8070]">{entry.date}</td>
+                        <td className="py-1.5 flex-1 truncate max-w-[130px] font-medium">{entry.name}</td>
+                        <td className="py-1.5 pl-2 text-right font-mono font-bold">{entry.score}m</td>
+                        <td className="py-1.5 pl-2 text-right text-[#9A8070] text-[11px] sm:text-xs">{entry.date}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -279,10 +289,10 @@ export default function Game() {
             )}
 
             <p
-              className="text-[#E34234] text-xs font-bold animate-pulse cursor-pointer border border-[#E34234]/30 inline-block px-5 py-2 rounded bg-white/50"
+              className="text-[#E34234] text-xs sm:text-sm font-bold animate-pulse cursor-pointer border border-[#E34234]/30 inline-block px-6 py-2.5 rounded-lg bg-white/70 shadow-sm"
               onClick={startGame}
             >
-              點擊重新開始冒險
+              點擊螢幕或按 Enter 重新開始
             </p>
           </div>
         </div>
