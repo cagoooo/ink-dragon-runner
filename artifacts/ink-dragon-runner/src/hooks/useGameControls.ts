@@ -33,6 +33,11 @@ export const useGameControls = (
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
+      const activeTag = document.activeElement?.tagName;
+      if (activeTag === 'INPUT' || activeTag === 'TEXTAREA') {
+        return; // 允許玩家在輸入框正常打字與按空白鍵
+      }
+
       if (e.code === 'Space' || e.code === 'ArrowUp') {
         e.preventDefault();
         handleJump();

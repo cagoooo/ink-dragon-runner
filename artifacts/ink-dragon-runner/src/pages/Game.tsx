@@ -130,7 +130,12 @@ export default function Game() {
           </div>
 
           {/* 神龍水墨皮膚選擇 Carousel */}
-          <div className="w-full max-w-3xl md:max-w-4xl px-4 my-2" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="w-full max-w-3xl md:max-w-4xl px-4 my-2"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
+          >
             <p className="text-sm sm:text-base md:text-xl font-bold text-[#5A3E30] mb-3 tracking-widest drop-shadow-sm">
               🎨 選擇出戰神龍水墨皮膚
             </p>
@@ -193,6 +198,8 @@ export default function Game() {
             className="border-[3px] border-[#E34234] p-6 sm:p-8 relative bg-[#F5F0E8] w-full mx-4 shadow-2xl rounded-xl"
             style={{ maxWidth: '28rem' }}
             onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
           >
             {/* New record badge */}
             {isNewRecord && (
@@ -218,7 +225,12 @@ export default function Game() {
 
             {/* Submit to leaderboard */}
             {!submitted ? (
-              <div className="mb-5 space-y-2" onClick={(e) => e.stopPropagation()}>
+              <div
+                className="mb-5 space-y-2"
+                onClick={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
+                onTouchEnd={(e) => e.stopPropagation()}
+              >
                 <p className="text-sm font-bold text-[#5A3E30]">上傳成績至全台雲端排行榜</p>
                 <div className="flex gap-2">
                   <input
@@ -226,12 +238,17 @@ export default function Game() {
                     value={playerName}
                     onChange={(e) => setPlayerName(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
+                    onTouchStart={(e) => e.stopPropagation()}
+                    onTouchEnd={(e) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}
                     placeholder="輸入大俠名字"
                     maxLength={20}
                     className="flex-1 min-w-0 px-3 py-2 text-sm border border-[#3D2B1F]/30 rounded-lg bg-white text-[#2C1810] focus:outline-none focus:border-[#E34234]"
                   />
                   <button
                     onClick={handleSubmit}
+                    onTouchStart={(e) => e.stopPropagation()}
+                    onTouchEnd={(e) => e.stopPropagation()}
                     disabled={!playerName.trim() || submitting}
                     className="px-4 py-2 text-sm bg-[#E34234] font-bold text-white rounded-lg disabled:opacity-40 hover:bg-[#c73228] transition-colors whitespace-nowrap"
                   >
