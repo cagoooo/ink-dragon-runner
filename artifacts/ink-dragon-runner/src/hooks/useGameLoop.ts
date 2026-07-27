@@ -15,6 +15,7 @@ import {
   createParticle,
 } from '../game/particles';
 import { createPowerUp, drawPowerUp } from '../game/powerups';
+import { triggerBossTrial, updateBossState } from '../game/boss';
 
 export const useGameLoop = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>,
@@ -123,14 +124,34 @@ export const useGameLoop = (
         });
         state.powerUps = state.powerUps.filter((p) => p.x + p.width > -50 && !p.collected);
 
-        // 隨機生成障礙物
+        // 每 500 分觸發一次巨龍 BOSS 試煉關卡
+        if (!state.boss.active && Math.floor(state.score) > 0 && Math.floor(state.score) % 500 === 0) {
+          triggerBossTrial(state.boss, height);
+        }
+
+        // 更新 BOSS 巨龍狀態與彈道
+        updateBossState(state.boss, width, height, state.dragon.y, Math.floor(state.score * 10));
+
+        // 隨機生成障礙物 (包含水墨雷雲)
         const lastObs = state.obstacles[state.obstacles.length - 1];
         const distFromLastObs = lastObs ? width - lastObs.x : 9999;
         const minGap = (Math.abs(GAME_CONFIG.JUMP_VY) * 2 / GAME_CONFIG.GRAVITY) * state.speed + 100;
 
         if (distFromLastObs > minGap && Math.random() < 0.02) {
-          const isBird = state.score > 300 && Math.random() < 0.35;
-          if (isBird) {
+          const rand = Math.random();
+          if (state.score > 250 && rand < 0.25) {
+            // 生成水墨雷雲 (需要俯衝或抓精準落點)
+            state.obstacles.push({
+              id: Math.random(),
+              type: 'thundercloud',
+              x: width + 50,
+              y: 85 + Math.random() * 30,
+              width: 50,
+              height: 35,
+              frame: 0,
+              passed: false,
+            });
+          } else if (state.score > 300 && rand < 0.5) {
             state.obstacles.push({
               id: Math.random(),
               type: 'bird',

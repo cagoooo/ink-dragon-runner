@@ -1,16 +1,17 @@
 import { GAME_CONFIG } from './config';
 import { InkParticle } from './particles';
 import { PowerUpItem } from './powerups';
+import { BossState, createInitialBossState } from './boss';
 
 export type GameMode = 'IDLE' | 'PLAYING' | 'DEAD';
 
 export interface Obstacle {
   id: number;
-  type: 'cactus' | 'bird';
+  type: 'cactus' | 'bird' | 'thundercloud';
   x: number;
-  y: number; // For cactus: height. For bird: altitude above horizon.
+  y: number; // For cactus: height. For bird/thundercloud: altitude above horizon.
   width: number;
-  height: number; // Same as y for cactus, hitbox height for bird.
+  height: number;
   frame: number;
   passed: boolean;
 }
@@ -28,6 +29,7 @@ export interface GameState {
   score: number;
   highScore: number;
   speed: number;
+  selectedSkinId: string;
   dragon: {
     y: number;
     vy: number;
@@ -42,6 +44,7 @@ export interface GameState {
   obstacles: Obstacle[];
   powerUps: PowerUpItem[];
   particles: InkParticle[];
+  boss: BossState;
   bgOffsets: number[];
   stars: Star[];
   width: number;
@@ -54,6 +57,7 @@ export const createInitialState = (): GameState => ({
   score: 0,
   highScore: parseInt(localStorage.getItem('ink-dragon-highscore') || '0', 10),
   speed: GAME_CONFIG.BASE_SPEED,
+  selectedSkinId: localStorage.getItem('ink-dragon-selected-skin') || 'classic',
   dragon: {
     y: 0,
     vy: 0,
@@ -68,6 +72,7 @@ export const createInitialState = (): GameState => ({
   obstacles: [],
   powerUps: [],
   particles: [],
+  boss: createInitialBossState(),
   bgOffsets: [0, 0, 0],
   stars: Array.from({ length: 30 }).map(() => ({
     x: Math.random(),

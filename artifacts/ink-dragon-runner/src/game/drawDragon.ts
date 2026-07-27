@@ -1,8 +1,10 @@
 import { GameState } from './state';
 import { GAME_CONFIG } from './config';
 import { getDayNightFactor, lerpColor } from './utils';
+import { getSkinById } from './skins';
 
 export const drawDragon = (ctx: CanvasRenderingContext2D, state: GameState, width: number, height: number) => {
+  const skin = getSkinById(state.selectedSkinId);
   const horizonY = height * GAME_CONFIG.HORIZON_RATIO;
   const t = getDayNightFactor(state.score);
   const dw = GAME_CONFIG.DRAGON_W;
@@ -18,19 +20,18 @@ export const drawDragon = (ctx: CanvasRenderingContext2D, state: GameState, widt
   ctx.save();
   ctx.translate(dx, dy);
   
-  // Ink colors adapting slightly to night mode
-  const mainColor = lerpColor('#2C1810', '#E8E0D0', t * 0.7); 
   const eyeWhite = lerpColor('#F5F0E8', '#1A1410', t);
   const eyePupil = lerpColor('#1A1410', '#F5F0E8', t);
   const accentColor = '#E34234';
   
-  ctx.fillStyle = mainColor;
-  ctx.strokeStyle = mainColor;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   
   const frame = state.dragon.frame;
   const bobY = (!state.dragon.isJumping && !state.dragon.isDucking) ? (frame % 2 === 0 ? 0 : 3) : 0;
+  
+  ctx.fillStyle = skin.bodyColor;
+  ctx.strokeStyle = skin.bodyColor;
   
   // Body Arc
   ctx.beginPath();
@@ -55,17 +56,13 @@ export const drawDragon = (ctx: CanvasRenderingContext2D, state: GameState, widt
   ctx.fill();
   
   // Eye
-  ctx.fillStyle = eyeWhite;
+  ctx.fillStyle = skin.eyeColor;
   ctx.beginPath();
   ctx.arc(headX + 4, headY - 4, 4, 0, Math.PI * 2);
   ctx.fill();
-  ctx.fillStyle = eyePupil;
-  ctx.beginPath();
-  ctx.arc(headX + 5, headY - 4, 2, 0, Math.PI * 2);
-  ctx.fill();
   
   // Horns
-  ctx.strokeStyle = mainColor;
+  ctx.strokeStyle = skin.hornColor;
   ctx.lineWidth = 2.5;
   ctx.beginPath();
   ctx.moveTo(headX - 5, headY - 12);
