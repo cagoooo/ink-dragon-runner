@@ -91,7 +91,7 @@ export default function Game() {
 
   return (
     <div
-      className="relative w-full h-[100dvh] overflow-hidden select-none bg-background transition-colors duration-1000"
+      className="relative w-full h-[100dvh] min-h-[100vh] overflow-hidden select-none bg-[#F5F0E8] text-[#2C1810] transition-colors duration-1000"
       onClick={handleJump}
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
@@ -99,7 +99,7 @@ export default function Game() {
     >
       <canvas
         ref={canvasRef}
-        className="block w-full h-full"
+        className="block w-full h-full bg-[#F5F0E8]"
       />
 
       {/* Mute Button */}

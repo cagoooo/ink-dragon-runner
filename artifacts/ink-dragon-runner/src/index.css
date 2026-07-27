@@ -8,8 +8,8 @@
 @theme inline {
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
-  --font-sans: 'ZCOOL XiaoWei', serif;
-  --font-serif: 'Ma Shan Zheng', cursive;
+  --font-sans: 'ZCOOL XiaoWei', "Microsoft JhengHei", "PingFang TC", sans-serif;
+  --font-serif: 'Ma Shan Zheng', "Microsoft JhengHei", cursive, serif;
 }
 
 :root {

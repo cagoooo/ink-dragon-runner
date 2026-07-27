@@ -34,13 +34,19 @@
     <link rel="icon" type="image/png" sizes="192x192" href="./favicon.png" />
     <link rel="apple-touch-icon" sizes="192x192" href="./apple-touch-icon.png" />
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts with swap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#F5F0E8] text-[#2C1810]">
-    <div id="root"></div>
+  <body class="bg-[#F5F0E8] text-[#2C1810]" style="background-color: #F5F0E8; color: #2C1810; margin: 0; padding: 0;">
+    <div id="root">
+      <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #F5F0E8; color: #8B4513; font-family: sans-serif; text-align: center; padding: 20px;">
+        <h1 style="font-size: 2.5rem; margin-bottom: 10px; color: #8B4513;">🐉 仙人掌大逃亡</h1>
+        <h2 style="font-size: 1.5rem; color: #2C1810; margin-bottom: 20px;">奔跑吧小墨龍</h2>
+        <p style="font-size: 1.1rem; color: #E34234; animation: pulse 1.5s infinite;">水墨畫風載入中，請稍候...</p>
+      </div>
+    </div>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>
