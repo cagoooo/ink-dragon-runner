@@ -12,14 +12,17 @@
 
 ## 📌 開發進度與已完成里程碑 (Progress Status)
 
-| 階段 | 功能項目 | 狀態 | 說明 |
+| 優先度 | 功能項目 | 狀態 | 說明 |
 | :--- | :--- | :---: | :--- |
-| **P0** | **Vite Base 相對路徑修復** | ✅ 已完成 | 解決 GitHub Pages 子目錄 `./` 下 404 白屏問題 |
-| **P0** | **GitHub Actions 官方 Pages 部署** | ✅ 已完成 | 建立 `.github/workflows/deploy.yml` 實現免手動 CI/CD 自動發布 |
+| **P0** | **Vite Base 相對與絕對子目錄修復** | ✅ 已完成 | 解決 GitHub Pages 子目錄 `./` 下 404 白屏問題 |
+| **P0** | **GitHub Actions 官方 Pages 部署** | ✅ 已完成 | 建立 `.github/workflows/deploy.yml` 免手動 CI/CD 自動發布 |
 | **P0** | **React Error Boundary 載入防護** | ✅ 已完成 | 避免 React 渲染例外死寂白屏，提供親切全繁中修復按鈕 |
 | **P1** | **水墨風視覺與社群 OG 卡片** | ✅ 已完成 | 繪製 1200x630 `og-image.png`、`favicon.svg`、`favicon.png` 與 `apple-touch-icon.png` |
-| **P1** | **Service Worker 自動更新提示** | ✅ 已完成 | 整合 `sw.js` (v1.0.1) 與 `SWUpdateBanner.tsx` 浮動更新提示 Toast |
+| **P1** | **Service Worker 升級提示彈窗 (v1.1.1)** | ✅ 已完成 | 修正 `install` 階段過早 `skipWaiting()` 導致更新提示消失的雷，提供自動更新 Toast |
 | **P1** | **Vite Chunk Hash 錯誤自癒** | ✅ 已完成 | 自動擷取動態模組載入錯誤並引導重新整理 |
+| **P1** | **[A1] 墨滴殘影與飛濺粒子系統** | ✅ 已完成 | 跳躍/落地水墨噴濺、步履墨痕殘影、護盾墨環與撞擊碎裂特效 |
+| **P1** | **[A2] 國風音效分層與道具聲音** | ✅ 已完成 | 五聲音階和弦 (`playPowerUpCollect`)、護盾破裂脆響 (`playShieldBreak`) 與衝刺風鳴 (`playBoost`) |
+| **P1** | **[B1] 水墨三大寶物道具系統** | ✅ 已完成 | 🛡️ 墨玉護盾、⚡ 神龍加速 (5s 無敵飛行衝刺)、🍄 水墨靈芝 (8s 得分 2x) 與 HUD 倒數列 |
 
 ---
 
