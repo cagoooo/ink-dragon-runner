@@ -80,7 +80,7 @@ export const drawDragon = (ctx: CanvasRenderingContext2D, state: GameState, widt
   
   // Legs
   ctx.lineWidth = 5;
-  ctx.strokeStyle = mainColor;
+  ctx.strokeStyle = skin.bodyColor;
   
   if (state.dragon.isJumping) {
     ctx.beginPath(); ctx.moveTo(dw * 0.7, headY + 5); ctx.lineTo(dw * 0.85, headY + 20); ctx.stroke();

@@ -8,14 +8,17 @@ export interface ScoreEntry {
 const LOCAL_STORAGE_KEY = 'ink-dragon-leaderboard-v2';
 
 export async function fetchLeaderboard(): Promise<ScoreEntry[]> {
-  try {
-    const res = await fetch('/api/scores');
-    if (res.ok) {
-      const data = await res.json();
-      if (Array.isArray(data) && data.length > 0) return data;
+  const isStaticHosting = window.location.hostname.includes('github.io');
+  if (!isStaticHosting) {
+    try {
+      const res = await fetch('/api/scores');
+      if (res.ok) {
+        const data = await res.json();
+        if (Array.isArray(data) && data.length > 0) return data;
+      }
+    } catch {
+      // Ignore fetch failure and fallback to LocalStorage
     }
-  } catch {
-    // Ignore fetch failure and fallback to LocalStorage
   }
 
   const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -45,14 +48,17 @@ export async function submitScore(name: string, score: number, skinId: string = 
     skinId,
   };
 
-  try {
-    await fetch('/api/scores', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newEntry),
-    });
-  } catch {
-    // Ignore server error and update local list
+  const isStaticHosting = window.location.hostname.includes('github.io');
+  if (!isStaticHosting) {
+    try {
+      await fetch('/api/scores', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newEntry),
+      });
+    } catch {
+      // Ignore server error and update local list
+    }
   }
 
   // 更新本地排行榜並排序取 Top 10
