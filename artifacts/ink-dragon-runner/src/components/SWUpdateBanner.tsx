@@ -22,24 +22,36 @@ export const SWUpdateBanner: React.FC = () => {
         return;
       }
 
-      // 正式環境 (GitHub Pages / Production) 註冊 SW
+      const swUrl = `${import.meta.env.BASE_URL.replace(/\/$/, '')}/sw.js`;
+
+      // 正式環境 (GitHub Pages / Production) 註冊與主動檢查 SW
       navigator.serviceWorker
-        .register('./sw.js')
+        .register(swUrl)
         .then((reg) => {
+          // 定期或分頁可見時主動檢查伺服器更新
+          const checkUpdate = () => {
+            reg.update().catch(() => {});
+          };
+
+          window.addEventListener('focus', checkUpdate);
+          document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'visible') checkUpdate();
+          });
+
+          // 如果已經有待命的 waiting worker
           if (reg.waiting) {
             setWaitingWorker(reg.waiting);
             setShowBanner(true);
           }
 
+          // 監聽新版本下載安裝
           reg.onupdatefound = () => {
             const installingWorker = reg.installing;
             if (installingWorker) {
               installingWorker.onstatechange = () => {
                 if (installingWorker.state === 'installed') {
-                  if (navigator.serviceWorker.controller) {
-                    setWaitingWorker(installingWorker);
-                    setShowBanner(true);
-                  }
+                  setWaitingWorker(installingWorker);
+                  setShowBanner(true);
                 }
               };
             }
@@ -56,7 +68,7 @@ export const SWUpdateBanner: React.FC = () => {
       });
     }
 
-    // Vite Chunk Hash 自癒機制：擷取動態載入失敗錯誤並重新整理
+    // Vite Chunk Hash 自癒機制：擷取動態載入失敗錯誤並自動重新整理
     const handleChunkError = (event: ErrorEvent | PromiseRejectionEvent) => {
       const errorMsg = 'reason' in event ? (event.reason?.message || '') : (event.message || '');
       if (
@@ -84,6 +96,8 @@ export const SWUpdateBanner: React.FC = () => {
   const handleUpdate = () => {
     if (waitingWorker) {
       waitingWorker.postMessage({ type: 'SKIP_WAITING' });
+    } else {
+      window.location.reload();
     }
     setShowBanner(false);
   };
@@ -95,7 +109,7 @@ export const SWUpdateBanner: React.FC = () => {
       <div className="flex items-center gap-3">
         <span className="text-2xl">🐲</span>
         <div>
-          <h4 className="font-bold text-sm text-[#E34234]">發現新版本 (v1.1.0)！</h4>
+          <h4 className="font-bold text-sm text-[#E34234]">發現新版本 (v1.1.1)！</h4>
           <p className="text-xs text-[#5A3E30]">有最新的水墨特效、國風音效與寶物系統，點擊即刻升級。</p>
         </div>
       </div>

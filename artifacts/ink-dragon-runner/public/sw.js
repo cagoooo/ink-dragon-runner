@@ -1,5 +1,5 @@
 // Service Worker for 仙人掌大逃亡：奔跑吧小墨龍
-const CACHE_VERSION = 'v1.1.0';
+const CACHE_VERSION = 'v1.1.1';
 const CACHE_NAME = `ink-dragon-cache-${CACHE_VERSION}`;
 
 const PRECACHE_ASSETS = [
@@ -11,7 +11,6 @@ const PRECACHE_ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
-  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(PRECACHE_ASSETS).catch(() => {
