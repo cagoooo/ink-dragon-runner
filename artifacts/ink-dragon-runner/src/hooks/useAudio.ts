@@ -263,6 +263,69 @@ export const useAudio = (stateRef: React.MutableRefObject<GameState>) => {
     noise.stop(now + 0.15);
   }, [ensureCtx]);
 
+  const playPowerUpCollect = useCallback(() => {
+    ensureCtx();
+    const ctx = ctxRef.current;
+    const dest = masterGainRef.current;
+    if (!ctx || !dest || isMutedRef.current) return;
+
+    const now = ctx.currentTime;
+    // 五聲音階靈動三連音 (C5 -> E5 -> G5)
+    const freqs = [523.25, 659.25, 783.99];
+    freqs.forEach((freq, idx) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+      gain.gain.setValueAtTime(0.15, now + idx * 0.05);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.05 + 0.2);
+      osc.connect(gain);
+      gain.connect(dest);
+      osc.start(now + idx * 0.05);
+      osc.stop(now + idx * 0.05 + 0.22);
+    });
+  }, [ensureCtx]);
+
+  const playShieldBreak = useCallback(() => {
+    ensureCtx();
+    const ctx = ctxRef.current;
+    const dest = masterGainRef.current;
+    if (!ctx || !dest || isMutedRef.current) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, now);
+    osc.frequency.exponentialRampToValueAtTime(200, now + 0.15);
+    gain.gain.setValueAtTime(0.2, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+    osc.connect(gain);
+    gain.connect(dest);
+    osc.start(now);
+    osc.stop(now + 0.2);
+  }, [ensureCtx]);
+
+  const playBoost = useCallback(() => {
+    ensureCtx();
+    const ctx = ctxRef.current;
+    const dest = masterGainRef.current;
+    if (!ctx || !dest || isMutedRef.current) return;
+
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(200, now);
+    osc.frequency.exponentialRampToValueAtTime(600, now + 0.3);
+    gain.gain.setValueAtTime(0.15, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+    osc.connect(gain);
+    gain.connect(dest);
+    osc.start(now);
+    osc.stop(now + 0.4);
+  }, [ensureCtx]);
+
   // ------------------------------------------------------------------
   // Mute toggle
   // ------------------------------------------------------------------
@@ -312,5 +375,5 @@ export const useAudio = (stateRef: React.MutableRefObject<GameState>) => {
     };
   }, [stateRef, ensureCtx, startBgm, stopBgm]);
 
-  return { playJump, playHit, toggleMute, isMuted, ensureCtx };
+  return { playJump, playHit, playPowerUpCollect, playShieldBreak, playBoost, toggleMute, isMuted, ensureCtx };
 };

@@ -1,4 +1,6 @@
 import { GAME_CONFIG } from './config';
+import { InkParticle } from './particles';
+import { PowerUpItem } from './powerups';
 
 export type GameMode = 'IDLE' | 'PLAYING' | 'DEAD';
 
@@ -32,12 +34,19 @@ export interface GameState {
     isJumping: boolean;
     isDucking: boolean;
     frame: number;
+    hasShield: boolean;
+    boostTimer: number; // 神龍無敵衝刺剩餘幀數
+    doubleScoreTimer: number; // 雙倍得分剩餘幀數
+    invincibleTimer: number; // 護盾破裂短暫無敵幀數
   };
   obstacles: Obstacle[];
+  powerUps: PowerUpItem[];
+  particles: InkParticle[];
   bgOffsets: number[];
   stars: Star[];
   width: number;
   height: number;
+  isNewRecord?: boolean;
 }
 
 export const createInitialState = (): GameState => ({
@@ -51,8 +60,14 @@ export const createInitialState = (): GameState => ({
     isJumping: false,
     isDucking: false,
     frame: 0,
+    hasShield: false,
+    boostTimer: 0,
+    doubleScoreTimer: 0,
+    invincibleTimer: 0,
   },
   obstacles: [],
+  powerUps: [],
+  particles: [],
   bgOffsets: [0, 0, 0],
   stars: Array.from({ length: 30 }).map(() => ({
     x: Math.random(),

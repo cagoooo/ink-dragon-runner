@@ -1,5 +1,5 @@
 // Service Worker for 仙人掌大逃亡：奔跑吧小墨龍
-const CACHE_VERSION = 'v1.0.1';
+const CACHE_VERSION = 'v1.1.0';
 const CACHE_NAME = `ink-dragon-cache-${CACHE_VERSION}`;
 
 const PRECACHE_ASSETS = [

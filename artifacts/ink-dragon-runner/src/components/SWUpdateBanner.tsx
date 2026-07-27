@@ -95,8 +95,8 @@ export const SWUpdateBanner: React.FC = () => {
       <div className="flex items-center gap-3">
         <span className="text-2xl">🐲</span>
         <div>
-          <h4 className="font-bold text-sm text-[#E34234]">發現新版本 (v1.0.1)！</h4>
-          <p className="text-xs text-[#5A3E30]">有最新的水墨墨龍功能優化，點擊即刻載入。</p>
+          <h4 className="font-bold text-sm text-[#E34234]">發現新版本 (v1.1.0)！</h4>
+          <p className="text-xs text-[#5A3E30]">有最新的水墨特效、國風音效與寶物系統，點擊即刻升級。</p>
         </div>
       </div>
       <div className="flex gap-2">

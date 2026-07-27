@@ -37,5 +37,54 @@ export const drawHud = (ctx: CanvasRenderingContext2D, state: GameState, width: 
   ctx.textBaseline = 'middle';
   ctx.fillText(`距離：${Math.floor(state.score)}`, hudWidth / 2, 22);
   
+  // 繪製 active 道具狀態圖示
+  let powerUpOffsetX = 20;
+  const powerUpY = 45;
+
+  if (state.dragon.hasShield) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(70, 130, 180, 0.85)';
+    ctx.beginPath();
+    ctx.arc(powerUpOffsetX + 12, powerUpY, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = '12px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('🛡️', powerUpOffsetX + 12, powerUpY + 1);
+    ctx.restore();
+    powerUpOffsetX += 36;
+  }
+
+  if (state.dragon.boostTimer > 0) {
+    ctx.save();
+    const sec = Math.ceil(state.dragon.boostTimer / 60);
+    ctx.fillStyle = 'rgba(227, 66, 52, 0.85)';
+    ctx.beginPath();
+    ctx.arc(powerUpOffsetX + 12, powerUpY, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`⚡${sec}s`, powerUpOffsetX + 12, powerUpY + 1);
+    ctx.restore();
+    powerUpOffsetX += 42;
+  }
+
+  if (state.dragon.doubleScoreTimer > 0) {
+    ctx.save();
+    const sec = Math.ceil(state.dragon.doubleScoreTimer / 60);
+    ctx.fillStyle = 'rgba(218, 165, 32, 0.85)';
+    ctx.beginPath();
+    ctx.arc(powerUpOffsetX + 12, powerUpY, 14, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.font = '11px sans-serif';
+    ctx.fillStyle = '#FFFFFF';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`2x${sec}s`, powerUpOffsetX + 12, powerUpY + 1);
+    ctx.restore();
+  }
+
   ctx.restore();
 };

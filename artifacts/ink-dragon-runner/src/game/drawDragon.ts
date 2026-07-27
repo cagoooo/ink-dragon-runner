@@ -109,5 +109,35 @@ export const drawDragon = (ctx: CanvasRenderingContext2D, state: GameState, widt
   ctx.arc(headX + 25, headY + 18 + bobY/2, 5, 0, Math.PI * 2);
   ctx.fill();
   
+  // 如果擁有護盾，繪製旋轉水墨藍護盾層
+  if (state.dragon.hasShield) {
+    ctx.save();
+    ctx.globalAlpha = 0.5 + Math.sin(state.dragon.frame * 0.2) * 0.25;
+    ctx.strokeStyle = '#4682B4';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([8, 4]);
+    ctx.beginPath();
+    ctx.arc(0, -height / 2, Math.max(width, height) * 0.7, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // 如果处于神龍衝刺無敵狀態，繪製風鳴速度線
+  if (state.dragon.boostTimer > 0) {
+    ctx.save();
+    ctx.globalAlpha = 0.6;
+    ctx.strokeStyle = '#E34234';
+    ctx.lineWidth = 2;
+    for (let i = 0; i < 4; i++) {
+      const lineY = -height + i * 15;
+      const offset = (state.dragon.frame * 12 + i * 20) % 60;
+      ctx.beginPath();
+      ctx.moveTo(-width - offset, lineY);
+      ctx.lineTo(-width / 2 - offset, lineY);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
   ctx.restore();
 };

@@ -39,10 +39,10 @@ export default function Game() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const { stateRef, uiState, startGame, setGameOver } = useGameState();
-  const { playJump, playHit, toggleMute, isMuted, ensureCtx } = useAudio(stateRef);
+  const { playJump, playHit, playPowerUpCollect, playShieldBreak, playBoost, toggleMute, isMuted, ensureCtx } = useAudio(stateRef);
   const { onTouchStart, onTouchEnd, handleJump } = useGameControls(stateRef, startGame, playJump, ensureCtx);
 
-  useGameLoop(canvasRef, stateRef, setGameOver, playHit);
+  useGameLoop(canvasRef, stateRef, setGameOver, playHit, playPowerUpCollect, playShieldBreak, playBoost);
 
   // Leaderboard state
   const [leaderboard, setLeaderboard] = useState<ScoreEntry[]>([]);
