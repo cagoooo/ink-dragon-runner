@@ -181,6 +181,31 @@ export default function Game() {
               點擊螢幕或按空白鍵開始冒險
             </p>
           </div>
+
+          {/* 開始畫面作者署名（只在 IDLE 畫面顯示，遊戲進行中不會出現） */}
+          <footer
+            className="px-4 text-xs sm:text-sm text-[#5A3E30] leading-relaxed tracking-wide print:hidden"
+            onClick={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            onTouchEnd={(e) => e.stopPropagation()}
+          >
+            <p className="font-bold text-[#3D2B1F]">仙人掌大逃亡：奔跑吧小墨龍</p>
+            <p>
+              Made with <span aria-label="愛心" className="inline-block mx-0.5">❤️</span> by{' '}
+              <a
+                href="https://cagoooo.github.io/Akai/"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="阿凱老師教育科技創新專區"
+                className="inline-block py-1 font-bold text-[#8B4513] border-b border-dotted border-current hover:border-solid hover:text-[#E34234] transition-colors"
+              >
+                阿凱老師
+              </a>
+              <span className="block sm:inline">
+                <span className="hidden sm:inline" aria-hidden="true">・</span>桃園市龍潭區石門國民小學
+              </span>
+            </p>
+          </footer>
         </div>
       )}
 
