@@ -1,6 +1,8 @@
 // Service Worker for 仙人掌大逃亡：奔跑吧小墨龍
-const CACHE_VERSION = 'v1.2.4';
-const CACHE_NAME = `ink-dragon-cache-${CACHE_VERSION}`;
+const CACHE_VERSION = 'v1.2.5';
+// 同網域（cagoooo.github.io）其他工具也共用 Cache Storage，只能清除本工具自己的快取
+const CACHE_PREFIX = 'ink-dragon-cache-';
+const CACHE_NAME = `${CACHE_PREFIX}${CACHE_VERSION}`;
 
 const PRECACHE_ASSETS = [
   './',
@@ -23,7 +25,7 @@ self.addEventListener('activate', (event) => {
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
+          if (key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME) {
             return caches.delete(key);
           }
         })

@@ -18,14 +18,16 @@
             var count = parseInt(sessionStorage.getItem(key) || '0', 10);
             if (count < 2) {
               sessionStorage.setItem(key, (count + 1).toString());
+              // 同網域（cagoooo.github.io）其他工具共用快取與註冊，只清除本工具自己的
+              var ownScope = window.location.origin + '/ink-dragon-runner/';
               if ('serviceWorker' in navigator) {
                 navigator.serviceWorker.getRegistrations().then(function(regs) {
-                  regs.forEach(function(r) { r.unregister(); });
+                  regs.forEach(function(r) { if (r.scope.indexOf(ownScope) === 0) r.unregister(); });
                 });
               }
               if ('caches' in window) {
                 caches.keys().then(function(keys) {
-                  keys.forEach(function(k) { caches.delete(k); });
+                  keys.forEach(function(k) { if (k.indexOf('ink-dragon-cache-') === 0) caches.delete(k); });
                 });
               }
               setTimeout(function() {
